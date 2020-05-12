@@ -22,7 +22,7 @@ node {
     // login Azure
     withCredentials([azureServicePrincipal('azureprincipal')]) {
       bat '''
-        az login --service-principal --username $AZURE_CLIENT_ID --password $AZURE_CLIENT_SECRET --tenant $AZURE_TENANT_ID
+        az login --service-principal --username $AZURE_CLIENT_ID --password $AZURE_CLIENT_SECRET --tenant $AZURE_TENANT_ID --verbose
         az account set -s $AZURE_SUBSCRIPTION_ID
       '''
     }
