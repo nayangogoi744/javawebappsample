@@ -13,7 +13,7 @@ node {
   }
   
   stage('build') {
-    bat 'mvn clean package'
+    sh 'mvn clean package'
   }
   
   stage('deploy') {
@@ -21,17 +21,17 @@ node {
     def webAppName = 'nayanapp'
     // login Azure
     withCredentials([azureServicePrincipal('azureprincipal')]) {
-      bat '''
+      sh '''
         az login --service-principal --username $AZURE_CLIENT_ID --password $AZURE_CLIENT_SECRET --tenant $AZURE_TENANT_ID --debug
         az account set -s $AZURE_SUBSCRIPTION_ID
       '''
     }
     // get publish settings
-    def pubProfilesJson = bat script: "az webapp deployment list-publishing-profiles -g $resourceGroup -n $webAppName", returnStdout: true
+    def pubProfilesJson = sh script: "az webapp deployment list-publishing-profiles -g $resourceGroup -n $webAppName", returnStdout: true
     def ftpProfile = getFtpPublishProfile pubProfilesJson
     // upload package
-    bat "curl -T target/calculator-1.0.war $ftpProfile.url/webapps/ROOT.war -u '$ftpProfile.username:$ftpProfile.password'"
+    sh "curl -T target/calculator-1.0.war $ftpProfile.url/webapps/ROOT.war -u '$ftpProfile.username:$ftpProfile.password'"
     // log out
-    bat 'az logout'
+    sh 'az logout'
   }
 }
