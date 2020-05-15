@@ -20,7 +20,7 @@ node {
     def resourceGroup = 'resGroup' 
     def webAppName = 'nayanapp'
     // login Azure
-    withCredentials([azureServicePrincipal('azureprincipal')]) {
+    withCredentials([azureServicePrincipal('azureprncipal')]) {
       sh '''
         az login --service-principal --username $AZURE_CLIENT_ID --password $AZURE_CLIENT_SECRET --tenant $AZURE_TENANT_ID --debug
         az account set -s $AZURE_SUBSCRIPTION_ID
